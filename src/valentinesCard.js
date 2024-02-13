@@ -1,10 +1,14 @@
 // This should load the valentines card
 import render from "./render.js";
+import renderLetter from "./renderLetter.js";
 import "./style.css";
 import verificationIntro from "./verificationIntro.js";
+import verifyLetter from "./verifyLetter.js";
+import audio from "./audio/bgMusic.mp3";
 
 export default function valentinesCard() {
-	const content = document.querySelector("#content"),
+	const body = document.querySelector("body"), 
+		content = document.querySelector("#content"),
 		valentinesDayCard = document.createElement("div"),
 		openBtn = document.createElement("input"),
 		openLabel = document.createElement("label"),
@@ -14,8 +18,10 @@ export default function valentinesCard() {
 		text = document.createElement("div"),
 		heart = document.createElement("div"),
 		smile = document.createElement("div"),
-		eyes = document.createElement("div");
-
+		eyes = document.createElement("div"),
+		cardMessageDialog = document.createElement("dialog"),
+		music = document.createElement("audio"),
+		cardMessageDiv = document.createElement("div");
 
 
 	valentinesDayCard.className = "valentines-day-card";
@@ -31,8 +37,23 @@ export default function valentinesCard() {
 	openLabel.htmlFor = "open";
 	openLabel.addEventListener("click", () => {
 		if (openBtn.disabled == true){
+			if (body.childNodes.length > 2){
+				body.removeChild(body.lastChild);
+			}
 			render();
 			verificationIntro();
+			music.src = audio;
+			music.autoplay = true;
+			music.loop = true;
+			music.volume = 0.5;
+			body.appendChild(music);
+		}
+		else {
+			setTimeout(() =>{
+				cardMessageDialog.showModal();
+				renderLetter();
+				verifyLetter();
+			}, 2000);
 		}
 	});
 	valentinesDayCard.appendChild(openLabel);
@@ -48,6 +69,7 @@ export default function valentinesCard() {
 	valentinesDayCard.appendChild(cardInside);
 
 	text.className = "text-one";
+	text.textContent = "Happy";
 	cardInside.appendChild(text);
 
 	heart.className = "heart";
@@ -56,4 +78,10 @@ export default function valentinesCard() {
 	cardInside.appendChild(heart);
 	cardInside.appendChild(smile);
 	cardInside.appendChild(eyes);
+
+	cardMessageDialog.id = "cardMessageDialog";
+	content.appendChild(cardMessageDialog);
+
+	cardMessageDiv.id = "cardMessageDiv";
+	cardMessageDialog.appendChild(cardMessageDiv);	
 }

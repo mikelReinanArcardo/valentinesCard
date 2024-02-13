@@ -37,6 +37,7 @@ export default function kooliPat() {
 			render();
 			livesLost();
 			clearInterval(koolipatience);
+			content.removeEventListener("mousedown", noHighlightWhenClicked);
 		}
 		arrow.style.left = `${kooliPoints}vw`;
 	}, 300);
@@ -52,7 +53,14 @@ export default function kooliPat() {
 			dialogBox.className = "dialog-13";
 			renderDialog();
 			nextDialog();
+			content.removeEventListener("mousedown", noHighlightWhenClicked);
 		}
 		arrow.style.left = `${kooliPoints}vw`;
 	});
+
+	function noHighlightWhenClicked(e) {
+		e.preventDefault();
+	}
+
+	content.addEventListener("mousedown", noHighlightWhenClicked);
 }
